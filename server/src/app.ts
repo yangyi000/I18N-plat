@@ -20,7 +20,7 @@ class App {
         //日志中间件
         this.app.use(morgan('dev'))
         // 引入路由
-        this.app.use('/', Routers)
+        this.app.use('/api/', Routers)
     }
 
 }
