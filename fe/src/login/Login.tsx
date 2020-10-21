@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import './Login.css';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import API from '../api/Api'
 
@@ -8,7 +8,6 @@ const Login = (props: any) => {
     // 0:登录，1:注册
     const [formType, setFormType] = useState(0)
     const onFinish = (values: { username: string, password: string, password1: string, password2: string }) => {
-        // TODO:登录验证，后台保存token至cookie
         if (formType) {
             // 注册
             API.register({ username: values.username, password: values.password1 }).then(() => {
@@ -16,8 +15,12 @@ const Login = (props: any) => {
             })
         } else {
             // 登录
-            API.login({ username: values.username, password: values.password }).then(() => {
-                props.history.push({ pathname: '/home' })
+            API.login({ username: values.username, password: values.password }).then((res: any) => {
+                if (res.code) {
+                    message.error('登录失败，账号或密码错误！')
+                } else {
+                    props.history.push({ pathname: '/home' })
+                }
             })
         }
     };
@@ -62,7 +65,7 @@ const Login = (props: any) => {
                             </Form.Item>
                             <Form.Item
                                 name="password2"
-                                rules={[{ required: !!formType, message: 'Please input your password!' },
+                                rules={[{ required: !!formType, message: '请输入密码!' },
                                 ({ getFieldValue }) => ({
                                     validator(rule, value) {
                                         if (!value || getFieldValue('password1') === value) {

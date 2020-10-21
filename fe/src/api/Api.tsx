@@ -1,6 +1,6 @@
 import axios from 'axios';
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL = 'http://localhost:8080/api/';// TODO:配置环境变量更改baseURL
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080/api/' : '/api/';
 
 axios.interceptors.request.use(config => {
     return config
@@ -9,7 +9,7 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(res => {
-    return res
+    return res.data
 }, err => {
     return Promise.reject(err)
 })
@@ -20,6 +20,9 @@ class Api {
 
     }
 
+    public test(){
+        return axios.post('test')
+    }
     /**
      * 登录
      * @param data {username:string,password:string}

@@ -13,9 +13,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "express-session": "^1.17.1",
+    "md5": "^2.3.0",
+    "mysql": "^2.18.1",
+    "ts-node": "^9.0.0"
   },
   "devDependencies": {
     "@types/morgan": "^1.9.1",

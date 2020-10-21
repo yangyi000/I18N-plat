@@ -12,6 +12,7 @@ import {
   UserAddOutlined
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import API from '../api/Api'
 
 interface UserInfo { type?: Number, username?: string }
 
@@ -29,6 +30,7 @@ class Home extends React.Component<any, any> {
     this.getUserInfo().then((res) => {
       this.setState({ userInfo: res })
     });
+    API.test()
   }
   setCollapsed() {
     this.setState({ collapsed: !this.state.collapsed })
