@@ -5,6 +5,8 @@ import Dashboard from './home/dashboard/Dashboard';
 import Login from './login/Login';
 import Project from './home/project/Project';
 import Settings from './home/settings/Settings';
+import Groups from './home/groups/Groups';
+import Users from './home/users/Users';
 
 function router() {
     return (
@@ -17,6 +19,8 @@ function router() {
                         <Redirect exact to="/home/dashboard" from='/home' />
                         <Route path="/home/dashboard" component={Dashboard} />
                         <Route path="/home/project" component={Project} />
+                        <Route path="/home/groups" component={Groups} />
+                        <Route path="/home/users" component={Users} />
                         <Route path="/home/settings" component={Settings} />
                     </Home>
                 } />
