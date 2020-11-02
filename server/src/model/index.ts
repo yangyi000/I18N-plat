@@ -2,7 +2,7 @@ import mysql from 'mysql'
 const db: { query: (sqlstr: string) => Promise<any> } = {
   query: () => Promise.resolve()
 }
-const mysqlConnection = mysql.createConnection({//创建mysql实例'127.0.0.1','3306','root','123456','uCode'
+const mysqlPool = mysql.createPool({//创建mysql实例'127.0.0.1','3306','root','123456','uCode'
   host: '127.0.0.1',
   port: '3306',
   user: 'root',
@@ -10,12 +10,12 @@ const mysqlConnection = mysql.createConnection({//创建mysql实例'127.0.0.1','
   database: 'uCode'
 });
 
-mysqlConnection.connect(function (err) {
+mysqlPool.getConnection(function (err, connection) {
   if (err) {
     console.error(err);
     return;
-  }else{
-    mysqlConnection.query(`CREATE TABLE IF NOT EXISTS user (
+  } else {
+    connection.query(`CREATE TABLE IF NOT EXISTS user (
       id int AUTO_INCREMENT,
       user_name VARCHAR(50) NOT NULL,
       password VARCHAR(50) NOT NULL,
@@ -28,9 +28,17 @@ mysqlConnection.connect(function (err) {
   }
 });
 
+mysqlPool.close()
+
 db.query = (sqlstr): Promise<any> => {
   return new Promise((resolve, reject) => {
-    mysqlConnection.query(sqlstr, (err: any, result: any) => {
+    const pool = mysqlPool.getConnection((err) => {
+      if (err) {
+        reject(err)
+      }
+    })
+    pool.query(sqlstr, (err: any, result: any) => {
+      pool.release()
       if (err) {
         reject(err)
       } else {
